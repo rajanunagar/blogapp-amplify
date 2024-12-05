@@ -237,4 +237,4 @@ function CreatePost() {
   );
 }
 
-export default withAuthenticator(CreatePost);
+export default CreatePost;

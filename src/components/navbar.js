@@ -79,30 +79,38 @@ function Navbar() {
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              <li className="nav-item">
-                <Link
-                  className="nav-link active"
-                  aria-current="page"
-                  to="createpost"
-                >
-                  create post
-                </Link>
-              </li>
+              {isUserSignedIn && (
+                <li className="nav-item">
+                  <Link
+                    className="nav-link active"
+                    aria-current="page"
+                    to="createpost"
+                  >
+                    create post
+                  </Link>
+                </li>
+              )}
               <li className="nav-item">
                 <Link className="nav-link" to="profile">
                   Profile
                 </Link>
               </li>
-              {isUserSignedIn && <li className="nav-item">
-                <Link className="nav-link" to="/myposts">
-                  My Posts
-                </Link>
-              </li>
-              }
-              {isUserSignedIn && <li className="nav-item" style={{cursor:'pointer'}} onClick={handleSignOut}>
+              {isUserSignedIn && (
+                <li className="nav-item">
+                  <Link className="nav-link" to="/myposts">
+                    My Posts
+                  </Link>
+                </li>
+              )}
+              {isUserSignedIn && (
+                <li
+                  className="nav-item"
+                  style={{ cursor: "pointer" }}
+                  onClick={handleSignOut}
+                >
                   Logout
-              </li>
-              }
+                </li>
+              )}
 
               {/* <li className="nav-item dropdown">
           <a
