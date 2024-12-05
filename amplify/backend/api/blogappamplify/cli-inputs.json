@@ -8,6 +8,12 @@
       "expirationTime": 7,
       "apiKeyExpirationDate": "2024-12-09T17:06:21.010Z",
       "keyDescription": ""
-    }
+    },
+    "additionalAuthTypes": [
+      {
+        "mode": "AMAZON_COGNITO_USER_POOLS",
+        "cognitoUserPoolId": "authblogappamplifyb49a5e2b"
+      }
+    ]
   }
 }

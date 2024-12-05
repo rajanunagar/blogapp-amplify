@@ -1,5 +1,11 @@
 {
   "AppSyncApiName": "blogappamplify",
   "DynamoDBBillingMode": "PAY_PER_REQUEST",
-  "DynamoDBEnableServerSideEncryption": false
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authblogappamplifyb49a5e2b",
+      "Outputs.UserPoolId"
+    ]
+  }
 }

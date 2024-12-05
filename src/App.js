@@ -1,8 +1,14 @@
 import { generateClient } from 'aws-amplify/api';
 import  {listPosts} from './graphql/queries'
 import { useEffect, useState } from 'react';
-import './awsConfigure'
-
+import './awsConfigure';
+import Navbar from './components/navbar';
+import ReactDOM from "react-dom/client";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from './components/home';
+import Profile from './components/profile';
+import CreatePost from './components/createPost';
+import MyPosts from './components/myPost';
 
 const client = generateClient();
 
@@ -13,7 +19,7 @@ function App() {
    const result =  await client.graphql({
       query: listPosts,
       variables:  {
-          limit:2,
+          limit:10,
           nextToken:null
         }
     });
@@ -24,10 +30,16 @@ function App() {
   },[]);
 
   return (
-    <div className="App">
-     hello world
-     {posts?.length}
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Navbar />}>
+          <Route index element={<Home />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="createpost" element={<CreatePost />} />
+          <Route path="myposts" element={<MyPosts />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
