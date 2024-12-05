@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { generateClient } from "aws-amplify/api";
 import { listPosts } from "../graphql/queries";
-
+import { useNavigate } from "react-router-dom";
 const client = generateClient();
 function Home() {
   const [posts, setPosts] = useState([]);
-
+  const navigate = useNavigate();
   const getPosts = async () => {
     const result = await client.graphql({
       query: listPosts,
@@ -37,7 +37,7 @@ function Home() {
             </thead>
             <tbody>
               {posts.map((post) => (
-                <tr>
+                <tr onClick={()=>{navigate(`/posts/${post.id}`)}}>
                   {/* <th scope="row">{post.id}</th> */}
                   <td>{post.title}</td>
                   <td>{post.content}</td>
