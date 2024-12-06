@@ -10,6 +10,7 @@ import Profile from './components/profile';
 import CreatePost from './components/createPost';
 import MyPosts from './components/myPost';
 import PostDetail from './components/postDetail';
+import EditPost from './components/editpost';
 
 const client = generateClient();
 
@@ -39,6 +40,7 @@ function App() {
           <Route path="createpost" element={<CreatePost />} />
           <Route path="myposts" element={<MyPosts />} />
           <Route path="posts/:id" element={<PostDetail />} />
+          <Route path="editpost/:id" element={<EditPost />} />
         </Route>
       </Routes>
     </BrowserRouter>

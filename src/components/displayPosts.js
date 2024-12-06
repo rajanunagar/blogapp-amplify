@@ -1,18 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
 import tempImage from '../assets/images/game of thrones_56.jpg';
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Route, useNavigate } from "react-router-dom";
+import {deletePost} from '../graphql/mutations';
+import { del, generateClient } from "aws-amplify/api";
 
-function DisplayPosts({ posts }) {
+const client = generateClient();
+function DisplayPosts({ posts,mypost }) {
  
   const navigate = useNavigate();
+  const [myPosts,setMyPosts]=useState(posts);
+  const onEdit = (event,id)=>{
+   event.stopPropagation();
+   navigate(`/editpost/${id}`);
+  }
 
+  const onDelete = async (event,id)=>{
+    event.stopPropagation();
+     const post = await client.graphql({
+      query:deletePost,
+      variables:{
+        input:{id:id}
+      },
+      authMode:'userPool'
+     });
+     console.log(post);
+     setMyPosts((items)=>items.filter(item=>item.id !==id));
+  }
+  
+  const onClickPost = (id)=>{
+    navigate(`/posts/${id}`);
+  }
   return (
     <div className="container mt-5">
       <div className="row justify-content-center text-center">
         {/* <h2>Posts</h2> */}
         {
-          posts.map(post=> (
-        <div className="col-lg-4 col-sm-6 col-12 mt-3">
+          myPosts.map((post,key)=> (
+        <div className="col-lg-4 col-sm-6 col-12 mt-3" onClick={(e)=> {onClickPost(post.id)}} key={key}>
 
             <div className="card" style={{ width: "18rem" }}>
             <img src={tempImage} className="card-img-top" alt="..." />
@@ -26,14 +50,18 @@ function DisplayPosts({ posts }) {
               <li className="list-group-item">{post.username}</li>
               <li className="list-group-item">{post.id}</li>
             </ul>
-            <div className="card-body">
-              <Link to={`/posts/${post.id}`} className="card-link">
+            {mypost && <div className="card-body">
+              {/* <button to={`/posts/${post.id}`} className="btn btn-primary">
                 Detail
-              </Link>
-              <Link to={`/posts/${post.id}`} className="card-link">
+              </button> */}
+              <button to={`editpost/${post.id}`} onClick={(e)=>{onEdit(e,post.id)}} className="btn btn-primary">
                 Edit
-              </Link>
+              </button>
+              <button  className="btn btn-primary" onClick={(e)=>onDelete(e,post.id)}>
+                Delete
+              </button>
             </div>
+            }
           </div>
           </div>
           ))

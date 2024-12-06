@@ -12,7 +12,6 @@ function Navbar() {
   const navigate = useNavigate();
 
   const checkIsSignedInorOur = async () => {
-    console.log('called');
     Hub.listen('auth', ({ payload }) => {
       switch (payload.event) {
         case 'signedIn':
@@ -53,7 +52,7 @@ function Navbar() {
   }
  
   useEffect(()=>{
-    checkIsSignedInorOur(); //this is not working on refresh
+    checkIsSignedInorOur();
   })
   useEffect(()=>{
     checkUserSignedInorNot2();
@@ -108,7 +107,7 @@ function Navbar() {
                   style={{ cursor: "pointer" }}
                   onClick={handleSignOut}
                 >
-                  Logout
+                  <div className="nal-link mt-2">Logout</div>
                 </li>
               )}
 

@@ -41,7 +41,7 @@ function Myposts() {
   return (
     <>
      {
-      posts && posts.length > 0 && <DisplayPosts posts={posts}/>
+      posts && posts.length > 0 && <DisplayPosts posts={posts} mypost={true}/>
      }
      {
       posts && posts.length===0 && <p>Don't have any posts</p>
