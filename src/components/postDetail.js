@@ -26,7 +26,7 @@ function PostDetail() {
   }
   useEffect(()=>{
     getUserDetail();
-  },[location.pathname]);
+  },[]);
 
   return (
     <div>

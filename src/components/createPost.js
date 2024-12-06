@@ -3,8 +3,7 @@ import { useNavigate } from "react-router";
 import {v4 as uuid} from 'uuid';
 import  {createPost} from '../graphql/mutations';
 import { generateClient} from 'aws-amplify/api';
-import { withAuthenticator } from '@aws-amplify/ui-react';
-import { fetchAuthSession} from 'aws-amplify/auth';
+import { getCurrentUser} from 'aws-amplify/auth';
 
 
 const client = generateClient();
@@ -54,11 +53,9 @@ function CreatePost() {
       console.log(formData);
       const id = uuid();
       formData.id =id;  
+      formData.username = await getUser();
       try {
         setFetching(true);
-        const session = await fetchAuthSession();
-        // console.log(decodeJWT(session))
-        console.log(session);
         const updatedTodo = await client.graphql({
           query: createPost,
           variables: { input: formData },
@@ -73,6 +70,18 @@ function CreatePost() {
     }
     setFetching(false);
   };
+
+  const getUser = async ()=>{
+    try{
+    const {username}= await getCurrentUser();
+    console.log();
+    return username;
+    }
+    catch(err){
+      navigate('/');
+    }
+    
+  }
 
   return (
     <>
