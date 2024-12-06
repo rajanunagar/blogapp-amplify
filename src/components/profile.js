@@ -3,7 +3,7 @@ import { withAuthenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import { getCurrentUser ,signOut} from "aws-amplify/auth";
 import { useNavigate } from 'react-router-dom';
-
+  
 function Profile() {
   const [user,setUser] = useState({});
   const navigate = useNavigate();

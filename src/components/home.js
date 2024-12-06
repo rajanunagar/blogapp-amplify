@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { generateClient } from "aws-amplify/api";
 import { listPosts } from "../graphql/queries";
 import { useNavigate } from "react-router-dom";
+import DisplayPosts from "./displayPosts";
 const client = generateClient();
 function Home() {
   const [posts, setPosts] = useState([]);
@@ -22,33 +23,14 @@ function Home() {
   }, []);
 
   return (
-    <div className="container mt-5">
-      <div className="row justify-content-center text-center">
-        <h2>Posts</h2>
-        <div className="col-md-10 col-lg-8">
-          <table className="table table-hover">
-            <thead>
-              <tr>
-                {/* <th scope="col">ID</th> */}
-                <th scope="col">Title</th>
-                <th scope="col">Content</th>
-                <th scope="col">Username</th>
-              </tr>
-            </thead>
-            <tbody>
-              {posts.map((post) => (
-                <tr onClick={()=>{navigate(`/posts/${post.id}`)}}>
-                  {/* <th scope="row">{post.id}</th> */}
-                  <td>{post.title}</td>
-                  <td>{post.content}</td>
-                  <td>{post.username}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+    <>
+    {
+      posts && posts.length > 0 && <DisplayPosts posts={posts}/>
+     }
+     {
+      posts && posts.length===0 && <p>Don't have any posts</p>
+     }
+     </>
   );
 }
 
