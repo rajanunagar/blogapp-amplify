@@ -12,6 +12,14 @@ export const getPost = /* GraphQL */ `
       comments {
         nextToken
         __typename
+        items{
+          id,
+          message,
+          postID,
+          createdBy,
+          createdAt,
+          updatedAt
+        }
       }
       createdAt
       updatedAt

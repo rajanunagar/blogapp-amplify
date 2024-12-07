@@ -37,7 +37,8 @@ function PostDetail() {
       setError('required field');
       return ;
     }
-    const {username}= await getCurrentUser();
+    // const {username}= await getCurrentUser();
+    try{
     const result = await client.graphql({
       query:createComment,
       variables: {
@@ -51,6 +52,10 @@ function PostDetail() {
       },
       authMode:"userPool"
     })
+  }
+  catch(error) {
+    console.log(error);
+  }
   
   }
 
@@ -72,9 +77,9 @@ function PostDetail() {
     />
     }
     {
-      post.comments && post.comments.length > 0 && <div>
-           {post.comments.map((rec,ind)=>(
-            <li>{rec.usernmae} :{rec.message}</li>
+      post.comments?.items && post.comments.items.length > 0 && <div>
+           {post.comments.items.map((rec,ind)=>(
+            <li>{rec.createdBy} :{rec.message}</li>
            ))
            }
       </div>
