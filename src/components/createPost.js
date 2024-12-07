@@ -62,7 +62,7 @@ function CreatePost() {
           console.log(filename);
            const result = await uploadData({
             path: ({ identityId }) =>
-              `protected/${identityId}/${image.name}`,
+              `protected/${identityId}/${uuid()}_${image.name}`,
             data: image,
             options: {
               onProgress: ({ transferredBytes, totalBytes }) => {

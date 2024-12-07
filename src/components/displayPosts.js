@@ -1,32 +1,44 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import tempImage from '../assets/images/game of thrones_56.jpg';
 import { Link, Route, useNavigate } from "react-router-dom";
 import {deletePost} from '../graphql/mutations';
 import {  generateClient } from "aws-amplify/api";
 import { StorageImage } from '@aws-amplify/ui-react-storage';
 import '@aws-amplify/ui-react/styles.css';
+import { remove } from 'aws-amplify/storage';
 
 const client = generateClient();
 function DisplayPosts({ posts,mypost }) {
  
   const navigate = useNavigate();
   const [myPosts,setMyPosts]=useState(posts);
+
   const onEdit = (event,id)=>{
    event.stopPropagation();
    navigate(`/editpost/${id}`);
   }
 
-  const onDelete = async (event,id)=>{
+  const onDelete = async (event,rec)=>{
     event.stopPropagation();
+
+    if(rec.coverImage) {
+      try {
+        await remove({ 
+          path: rec.coverImage,
+        });
+      } catch (error) {
+        console.log('Error ', error);
+      }
+    }
      const post = await client.graphql({
       query:deletePost,
       variables:{
-        input:{id:id}
+        input:{id:rec.id}
       },
       authMode:'userPool'
      });
      console.log(post);
-     setMyPosts((items)=>items.filter(item=>item.id !==id));
+     setMyPosts((items)=>items.filter(item=>item.id !==rec.id));
   }
   
   const onClickPost = (id)=>{
@@ -69,7 +81,7 @@ function DisplayPosts({ posts,mypost }) {
               <button to={`editpost/${post.id}`} onClick={(e)=>{onEdit(e,post.id)}} className="btn btn-primary">
                 Edit
               </button>
-              <button  className="btn btn-primary" onClick={(e)=>onDelete(e,post.id)}>
+              <button  className="btn btn-primary" onClick={(e)=>onDelete(e,post)}>
                 Delete
               </button>
             </div>
