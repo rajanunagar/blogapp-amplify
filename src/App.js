@@ -11,7 +11,6 @@ import CreatePost from './components/createPost';
 import MyPosts from './components/myPost';
 import PostDetail from './components/postDetail';
 import EditPost from './components/editpost';
-
 const client = generateClient();
 
 function App() {

@@ -15,6 +15,16 @@ export type AmplifyDependentResourcesAttributes = {
       "UserPoolArn": "string",
       "UserPoolId": "string",
       "UserPoolName": "string"
+    },
+    "userPoolGroups": {
+      "s3FullPermissionsGroupRole": "string",
+      "s3ReadPermissionsGroupRole": "string"
+    }
+  },
+  "storage": {
+    "posts": {
+      "BucketName": "string",
+      "Region": "string"
     }
   }
 }

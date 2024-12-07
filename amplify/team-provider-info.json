@@ -16,7 +16,11 @@
         "blogappamplify": {}
       },
       "auth": {
-        "blogappamplifyb49a5e2b": {}
+        "blogappamplifyb49a5e2b": {},
+        "userPoolGroups": {}
+      },
+      "storage": {
+        "posts": {}
       }
     }
   }

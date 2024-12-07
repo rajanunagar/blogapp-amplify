@@ -11,7 +11,7 @@ function Home() {
     const result = await client.graphql({
       query: listPosts,
       variables: {
-        limit: 10,
+        limit: 20,
         nextToken: null,
       },
     });

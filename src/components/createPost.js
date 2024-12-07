@@ -1,9 +1,11 @@
-import React, {useState } from "react";
+import React, {useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import {v4 as uuid} from 'uuid';
 import  {createPost} from '../graphql/mutations';
 import { generateClient} from 'aws-amplify/api';
 import { getCurrentUser} from 'aws-amplify/auth';
+import { uploadData} from 'aws-amplify/storage';
+
 
 
 const client = generateClient();
@@ -15,11 +17,12 @@ function CreatePost() {
   const [fetching, setFetching] = useState(false);
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
-  const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     content: "",
   });
+  const [image,setImage] = useState(null);
+  const inputFile = useRef(null);
 
   const handleChange = (e) => {
     setFormData((formData) => ({
@@ -27,9 +30,7 @@ function CreatePost() {
       [e.target.name]: e.target.value,
     }));
   };
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
+
   const validate = () => {
     let tempErrors = {};
     let isValid = true;
@@ -55,6 +56,32 @@ function CreatePost() {
       formData.id =id;  
       formData.username = await getUser();
       try {
+        console.log('sskdfk',image,image?.name)
+        if(image) {
+          const filename = `${image.name}_${uuid()}`;
+          console.log(filename);
+           const result = await uploadData({
+            path: ({ identityId }) =>
+              `protected/${identityId}/${image.name}`,
+            data: image,
+            options: {
+              onProgress: ({ transferredBytes, totalBytes }) => {
+                if (totalBytes) {
+                  console.log(
+                    `Upload progress ${Math.round(
+                      (transferredBytes / totalBytes) * 100
+                    )} %`
+                  );
+                }
+              },
+            },
+          }).result;
+          formData.coverImage = result.path;;
+
+          console.log(formData);
+          // await Storage.put(filename,image);
+        }
+        console.log('sfk')
         setFetching(true);
         const updatedTodo = await client.graphql({
           query: createPost,
@@ -81,6 +108,15 @@ function CreatePost() {
       navigate('/');
     }
     
+  }
+
+  const changeImage = (e)=>{
+    const file = e.target.files[0];
+    setImage(file);
+  }
+
+  const handleUpload = ()=>{
+    inputFile.current.click();
   }
 
   return (
@@ -205,6 +241,9 @@ function CreatePost() {
                         </small>
            )}
         </div>
+        {
+          image && <img src={URL.createObjectURL(image)}  style={{height:'100px',width:'100px'}}/>
+        }
         <div className="col-12">
           <label htmlFor="content" className="form-label">
           Content
@@ -224,9 +263,23 @@ function CreatePost() {
            )}
         </div>
         <div className="col-12">
-          {/* <button type="submit" className="btn btn-primary">
-            Sign in
-          </button> */}
+          {/* <label htmlFor="content" className="form-label">
+          Image
+          </label> */}
+          <input
+            type="file"
+            className="form-control"
+            // id="content"
+            ref = {inputFile}
+            onChange={changeImage}
+            name="image"
+            style={{display:'none'}}
+          />
+        </div>
+        <div className="col-12">
+        <button type="button" className="btn btn-primary mx-3" onClick={handleUpload}>
+                          Upload image
+         </button>
           {!fetching && (
                         <button type="submit" className="btn btn-primary">
                           Submit

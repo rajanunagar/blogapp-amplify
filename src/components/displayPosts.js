@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import tempImage from '../assets/images/game of thrones_56.jpg';
 import { Link, Route, useNavigate } from "react-router-dom";
 import {deletePost} from '../graphql/mutations';
-import { del, generateClient } from "aws-amplify/api";
+import {  generateClient } from "aws-amplify/api";
+import { StorageImage } from '@aws-amplify/ui-react-storage';
+import '@aws-amplify/ui-react/styles.css';
 
 const client = generateClient();
 function DisplayPosts({ posts,mypost }) {
@@ -39,7 +41,17 @@ function DisplayPosts({ posts,mypost }) {
         <div className="col-lg-4 col-sm-6 col-12 mt-3" onClick={(e)=> {onClickPost(post.id)}} key={key}>
 
             <div className="card" style={{ width: "18rem" }}>
+            { !post.coverImage &&
             <img src={tempImage} className="card-img-top" alt="..." />
+            }
+             { post.coverImage && 
+      <StorageImage
+      alt="protected cat"
+      path= {post.coverImage}
+      className={post.coverImage}
+      style={{width:"100%",height:"161px"}}
+    />
+    }
             <div className="card-body">
               <h5 className="card-title">{post.title}</h5>
               <p className="card-text">

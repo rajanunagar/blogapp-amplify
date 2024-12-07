@@ -1,0 +1,10 @@
+[
+  {
+    "groupName": "s3FullPermissions",
+    "precedence": 1
+  },
+  {
+    "groupName": "s3ReadPermissions",
+    "precedence": 2
+  }
+]

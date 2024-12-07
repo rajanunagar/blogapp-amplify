@@ -1,0 +1,14 @@
+{
+  "resourceName": "posts",
+  "policyUUID": "0e80d6b6",
+  "bucketName": "blogappamplify6b53ed9894bc4b459843860be954819b",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ]
+}
